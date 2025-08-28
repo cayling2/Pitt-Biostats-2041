@@ -83,6 +83,8 @@ You can also install packages in the bottom right quadrant of R Studio in the ta
 # load the R package called "tidyverse"
 library(tidyverse)
 
+# make sure to add this to every project
+
 ```
 
 Note: if you forget to include this line of code when you start a new R session (or in R Markdown files), you'll get an error when you try to use the functions from the package. I'll show this to you live when we start importing data using functions from the `tidyverse` package.
@@ -92,6 +94,7 @@ Note: if you forget to include this line of code when you start a new R session 
 To work with data in R, we have to import it. Typically, we do this by directing R to read in a data file stored on our computer (there are also ways to download directly from a URL, but we'll stick to reading data in from saved files).
 
 We'll cover a few different ways to read data into R.
+
 
 ### Importing using the "Files" tool in R Studio
 
@@ -107,6 +110,18 @@ This will cause a window to pop up where you can choose a name for the data you'
 
 I recommend using the second option to copy the code and paste it into your R Markdown file yourself!! If you just run the code in the Console and forget to copy it up into your R Markdown file, everything will work fine as you're working interactively in R Studio but your knitted HTML file will have lots of errors because it won't be able to find the data!!
 
+```{r}
+
+#tick marks are by the 1
+
+#make code chunk to include data importing code
+library(readr)
+RA <- read_csv("Recitations/R1/ArthritisTreatment.csv")
+View(RA)
+
+```
+
+
 ### Importing from the "Data" Folder
 
 You should have saved a copy of the file "ArthritisTreatment.csv" in the "Data" subfolder of your class folder.
@@ -115,17 +130,21 @@ A way to check that you do in fact have this file is to run the line of code bel
 
 ```{r}
 # check that we have a file called "ArthritisTreatment.csv"
-list.files(path = "Data")
+list.files(path = "Recitations/R1")
 
 # to list the files with their full path names, we can add an extra argument
-list.files(path = "Data", full.names = TRUE)
+list.files(path = "Recitations/R1", full.names = TRUE)
 ```
 
 To read in the csv file we are going to use the `read_csv()` function, which is part of the `tidyverse` package.
 
 ```{r}
 # read the arthritis data
-read_csv(file = "Data/ArthritisTreatment.csv")
+read_csv(file = "Recitations/R1/ArthritisTreatment.csv")
+
+#forgot to name the data (arrow/assign operator)   
+# This allows it to be saved in the environment
+RA2 = read_csv(file = "Recitations/R1/ArthritisTreatment.csv")
 
 ```
 
@@ -147,7 +166,9 @@ To take a look at the data in a new tab, click on the small white box on the rig
 
 ```{r}
 # print the first 6 rows of the dataset
-head(ra)
+head(RA)
+
+#variable in consol vs codde chunk matter for working with data 
 
 ```
 
@@ -159,7 +180,7 @@ To copy the full path to the file you want to load into R, navigate to that file
 
 ```{r}
 # reading in data using the full pathname
-ra2 = read_csv("PASTE THE FILE PATH YOU COPIED HERE")
+RA3 = read_csv("/Users/cayli/Desktop/Biostats 2041/Pitt-Biostats-2041/Recitations/R1/ArthritisTreatment.csv")
 
 ```
 
