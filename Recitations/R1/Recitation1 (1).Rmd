@@ -95,7 +95,6 @@ To work with data in R, we have to import it. Typically, we do this by directing
 
 We'll cover a few different ways to read data into R.
 
-
 ### Importing using the "Files" tool in R Studio
 
 Lastly, you can use the tools built into R Studio to import a data file.
@@ -120,7 +119,6 @@ RA <- read_csv("Recitations/R1/ArthritisTreatment.csv")
 View(RA)
 
 ```
-
 
 ### Importing from the "Data" Folder
 
