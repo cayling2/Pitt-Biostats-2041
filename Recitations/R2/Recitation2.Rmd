@@ -196,6 +196,7 @@ Sometimes we only want to look at a few columns in a data frame, rather than all
 
 ```{r}
 # select ID, Age, and AgeGp
+#  %>%  pipe operator 
 ra %>% 
   select(ID,Age, AgeGp)
 
@@ -242,9 +243,11 @@ To create a new variable, I'm going to use the `mutate()` function. This functio
 
 ```{r}
 # make a new variable for age in months
-ra %>%
+ra2 = ra %>%
   mutate(Age_months = Age * 12)
 
+ra
+ra2 #added a new column
 ```
 
 Another function I might want to use is the `case_when()` function, which creates a new variable with values depending on if certain conditions are true. The following code creates a new variable called `CDAI_high` that takes the value `"High"` when an individual has a `CDAI` value greater than or equal to (`">="`) 22, and takes the value `"Low"` otherwise (when `CDAI` is less than, `<` 22):
