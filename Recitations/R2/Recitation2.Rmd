@@ -19,10 +19,10 @@ knitr::opts_chunk$set(echo = TRUE, error = TRUE,
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
-Important steps: 
+Important steps:
 
-* Open your class R project!
-* We are going to be using the same data set as last time! If you didn't already download it from Canvas, do so now!
+-   Open your class R project!
+-   We are going to be using the same data set as last time! If you didn't already download it from Canvas, do so now!
 
 # Introduction
 
@@ -42,6 +42,9 @@ x_number = 5
 
 # print
 print(x_number)
+
+#both work
+x_number
 ```
 
 ## Characters
@@ -62,6 +65,10 @@ x_vector = c(1, 2, 3, 4, 5)
 
 # print
 print(x_vector)
+
+
+y_vector <- c(1:100)
+y_vector
 ```
 
 ### Vector indices
@@ -72,6 +79,15 @@ Vectors have indices starting at 1. If I just want to look at the 2nd, 3rd, and 
 # look at the second, third, and 5th entry of x_vector
 x_vector[c(2, 3, 5)]
 
+x_vector
+x_vector + 1
+
+x_vector[1] <- 0
+x_vector
+
+
+#NA placeholder since the vector is shorter than that
+x_vector[1:6]
 ```
 
 If I want to look at the first through third elements, I can use either of these two lines of code:
@@ -90,11 +106,15 @@ x_vector[1:3]
 
 ```{r}
 # logical value
+#is the length equal to 4 <- FALSE
 x_logical = (length(x_vector) == 4)
 
 # print
 print(x_logical)
 
+
+x_logical2 <- (length(x_vector) != 4)
+x_logical2
 ```
 
 ## Missing (NA)
@@ -116,11 +136,15 @@ is.na(x_not_missing)
 ```{r}
 # making x_vector values into factor values
 # Likert scale
+#levels for the data and labels to go with those levels (need to be the same length)
+x_vector <- c(x_vector, 1, 3)
 x_likert = factor(x_vector, 
-                  levels = c(1, 2, 3, 4, 5),
+                  levels = c(1, 2, 3, 4, 5), 
                   labels = c("Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"))
 
 # print
+x_vector
+
 print(x_likert)
 ```
 
@@ -134,7 +158,11 @@ Here I am importing the Rheumatoid Arthritis data set that we worked with last t
 
 ```{r}
 # read the arthritis data
-ra = read_csv(file = "ArthritisTreatment.csv")
+#ra = read_csv(file = "ArthritisTreatment.csv")
+
+#Fixed code that doesn't give error
+#can also start in directory you are in then doing "Data/ArthritisTreatment.csv"
+ra <- read_csv(file = "C:/Users/cayli/Desktop/Biostats 2041/Pitt-Biostats-2041/Data/ArthritisTreatment.csv")
 
 ```
 
@@ -154,7 +182,7 @@ colnames(ra)
 
 ## Types of Variables
 
-The `str()` function shows you the structure of an R object. IN this case, since we are passing in a data frame, it will show us the column names, column types, and first 10 values of each column. 
+The `str()` function shows you the structure of an R object. IN this case, since we are passing in a data frame, it will show us the column names, column types, and first 10 values of each column.
 
 ```{r}
 # show data set structure
@@ -175,7 +203,7 @@ ra %>%
 
 ### Other ways to extract columns
 
-Another way you can extract columns from a data frame in R is to use the `$` operator. This will pull out individual columns from a data frame and return them as vectors. The syntax is: 
+Another way you can extract columns from a data frame in R is to use the `$` operator. This will pull out individual columns from a data frame and return them as vectors. The syntax is:
 
 `dataframe_name$column_name`
 
@@ -208,7 +236,7 @@ ra[1:10, 2]
 
 ## Making New Variables
 
-Sometimes we want to make new variables in R to store new information or to store information in a different way. For example, maybe I want to add a new column that displays each individual's age in months instead of years. I already have a column showing age in years (`Age` column), so to make my new column for age in months, I just need to multiply my `Age` column by 12. 
+Sometimes we want to make new variables in R to store new information or to store information in a different way. For example, maybe I want to add a new column that displays each individual's age in months instead of years. I already have a column showing age in years (`Age` column), so to make my new column for age in months, I just need to multiply my `Age` column by 12.
 
 To create a new variable, I'm going to use the `mutate()` function. This function has the ability to make a new column (if you provide it with a column name for your new column that doesn't already exist in the data frame) or update/replace an old column (if you provide it with a name that does already exist in the data). To make my age in months column, I'm going to call it `Age_months` and use the following code:
 
@@ -233,7 +261,7 @@ ra %>%
 
 Go over and take a look at our `ra` data frame stored in our environment. Notice that the new variables don't appear! Where did they go?
 
-When we run functions like `mutate()` or `select()`, they don't make permanent changes to our data frame. They simply execute a particular function and return (and often print) the output. If we want to make these changes permanent, we have to __save the output__ with a name. If we don't want to overwrite our previous data set, we can give the output a new name. Below, I've called my output with the `Age_months` and `CDAI_high` variables added `ra_new`.
+When we run functions like `mutate()` or `select()`, they don't make permanent changes to our data frame. They simply execute a particular function and return (and often print) the output. If we want to make these changes permanent, we have to **save the output** with a name. If we don't want to overwrite our previous data set, we can give the output a new name. Below, I've called my output with the `Age_months` and `CDAI_high` variables added `ra_new`.
 
 ```{r}
 # save the new data frame with the extra variables with a new name
@@ -253,12 +281,11 @@ ra = ra %>%
          Age_months = Age * 12)
 ```
 
-__Warning: only update data frames if you're sure you want to make the change permanent!__ If you have removed columns or rows or updated some entries in the data, saving under the same name will replace the data frame and you won't have access to the original data anymore. If you ever accidentally overwrite a data frame that you didn't mean to, you can start from the beginning and re-run your code to retrieve the original data set, but this is extra work that you probably don't want to go through every time. __Rule of thumb: if you're making major changes to a data frame that delete or change the original entries (not just add extra columns), it's safer to save it with a new name__
+**Warning: only update data frames if you're sure you want to make the change permanent!** If you have removed columns or rows or updated some entries in the data, saving under the same name will replace the data frame and you won't have access to the original data anymore. If you ever accidentally overwrite a data frame that you didn't mean to, you can start from the beginning and re-run your code to retrieve the original data set, but this is extra work that you probably don't want to go through every time. **Rule of thumb: if you're making major changes to a data frame that delete or change the original entries (not just add extra columns), it's safer to save it with a new name**
 
 ### Making New Factor Variables
 
-We can create factor variables in data frames as well. Below I've updated the `ra` data frame to include a factor variable for age group (which I called `AgeGp_f`) that uses the values from the `AgeGp` column (which are 1s and 2s) and assigns labels that are easier to understand. 
-
+We can create factor variables in data frames as well. Below I've updated the `ra` data frame to include a factor variable for age group (which I called `AgeGp_f`) that uses the values from the `AgeGp` column (which are 1s and 2s) and assigns labels that are easier to understand.
 
 ```{r}
 # make a new factor variable for Age group
@@ -277,7 +304,7 @@ ra %>%
 Sometimes we only want to use a subset of our data for a particular analysis. If you know you're going to be using a particular subgroup of the data for multiple tests/models/etc, it may be a good idea to save a new smaller data set containing only those subjects. To make these subsets, we can use the `filter()` function from the tidyverse package.
 
 Below, I've created a new data frame called `ra.cdai.high` that only contains values from individuals who had a high CDAI value (at least 22):
- 
+
 ```{r}
 # make a new data set containing only individuals with high CDAI value
 ra.cdai.high = ra %>%
@@ -351,7 +378,7 @@ ra %>%
 
 ## New factor variable
 
-__Make a new factor variable for whether CDAI was measured or not (CDAI_YN; 1 means missing, 2 means CDAI was measured) __
+**Make a new factor variable for whether CDAI was measured or not (CDAI_YN; 1 means missing, 2 means CDAI was measured)**
 
 ```{r}
 # factor variable for CDAI_YN
@@ -359,10 +386,9 @@ __Make a new factor variable for whether CDAI was measured or not (CDAI_YN; 1 me
 
 ```
 
-
 ## Summarize by group
 
-__Calculate the mean, median, and standard deviation of time since diagnosis (Yrs_From_Dx) for people with CDAI measured and people without CDAI measured__
+**Calculate the mean, median, and standard deviation of time since diagnosis (Yrs_From_Dx) for people with CDAI measured and people without CDAI measured**
 
 ```{r}
 # calculate mean, median, sd of Yrs_From_Diagnosis for each group (CDAI measured vs not)
@@ -372,7 +398,7 @@ __Calculate the mean, median, and standard deviation of time since diagnosis (Yr
 
 ## Fix the error
 
-__Below I've included a line of code that is attempting to extract the `Sex` column from the `ra` data frame and print the first 8 entries, but it has an error. Find the error and fix it.__
+**Below I've included a line of code that is attempting to extract the `Sex` column from the `ra` data frame and print the first 8 entries, but it has an error. Find the error and fix it.**
 
 ```{r}
 # extract sex variable from ra (this should give you an error)
@@ -382,7 +408,7 @@ ra$sex[1:8]
 
 ## Data Filtering
 
-__Save a new data set of only female participants (Sex: 0 = Female, 1 = Male). Call the data sex ra_female. How many rows are there in this new data set?__
+**Save a new data set of only female participants (Sex: 0 = Female, 1 = Male). Call the data sex ra_female. How many rows are there in this new data set?**
 
 ```{r}
 # save data set with only female participants
@@ -391,10 +417,9 @@ __Save a new data set of only female participants (Sex: 0 = Female, 1 = Male). C
 
 ```
 
-
 ## Fix the error
 
-__Below I've included a line of code that is attempting to take the mean CDAI value by age group just among the female participants of this study (using ra_female data frame you just created) but it has an error. Find the error and fix it. __
+**Below I've included a line of code that is attempting to take the mean CDAI value by age group just among the female participants of this study (using ra_female data frame you just created) but it has an error. Find the error and fix it.**
 
 ```{r}
 # calculate the mean CDAI by age group among female participants (this should give you an error)
@@ -404,7 +429,6 @@ group_by(AgeGp_f) %>%
 
 ```
 
+## Knit
 
-## Knit 
-
-__Try knitting your document. Are there any errors in the HTML output that you weren't expecting?__
+**Try knitting your document. Are there any errors in the HTML output that you weren't expecting?**
